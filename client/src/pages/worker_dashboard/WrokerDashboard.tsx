@@ -5,14 +5,26 @@ import { useState } from "react";
 import Tab from "./Tab";
 
 export default function WrokerDashboard() {
-  const [tab, setTab] = useState("accepted");
+  const [tab, setTab] = useState<OfferTypes>("new");
 
   return (
     <main className="w-full">
       <Nav />
       <div className="w-[1440px] mx-auto">
-        <Tabs defaultValue="accepted" onValueChange={(val) => setTab(val)}>
+        <Tabs
+          defaultValue="new"
+          onValueChange={(val) => setTab(val as OfferTypes)}
+        >
           <TabsList className="flex gap-3">
+            <TabsTrigger
+              value="new"
+              className={
+                (tab === "new" ? `bg-muted rounded-sm border` : "") +
+                " px-3 py-1"
+              }
+            >
+              Nouveau
+            </TabsTrigger>
             <TabsTrigger
               value="accepted"
               className={

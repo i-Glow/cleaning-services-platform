@@ -17,6 +17,9 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        primary: "var(--font-primary)",
+      },
       colors: {
         "background-alt": "hsl(var(--background-alt))",
         border: "hsl(var(--border))",

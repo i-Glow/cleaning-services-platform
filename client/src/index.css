@@ -5,6 +5,7 @@
   
 @layer base {
   :root {
+    --font-primary: 'Rubik';
     --background: 0 0% 100%;
     --background-alt: 216, 85%, 94%;
     --foreground: 222.2 84% 4.9%;
@@ -66,7 +67,7 @@
     body {
       @apply bg-background text-foreground;
     }
-    p, button, a, input, label, textarea {
+    p, button, a, input, label, textarea, div, span {
       font-family: "Rubik", sans-serif;
     }
     h1 {

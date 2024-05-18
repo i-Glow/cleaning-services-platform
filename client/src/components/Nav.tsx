@@ -8,51 +8,69 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { useAuth } from "@/lib/context/auth";
 
 export default function Nav() {
-  const isLoggedIn = true;
-  const isWorker = false;
+  const { user, setUser } = useAuth();
+
+  const logout = () => {
+    setUser(undefined);
+  };
 
   return (
     <nav className="w-full">
       <div className="flex items-center justify-center gap-32 py-4">
-        <h2>Clino</h2>
+        <div className="flex">
+          <h2 className="text-primary">ANC</h2>
+          <h2>Clean</h2>
+        </div>
         <div className="flex gap-4 items-center">
           <Link to="/">Accueil</Link>
           <Link to="/services">Services</Link>
         </div>
         <div className="flex gap-4">
-          {isLoggedIn ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
+          {!!user ? (
+            user.role === "a" ? (
+              <Link to="/a/partenaires">
                 <Button variant="ghost" className="p-1">
                   <div className="h-full aspect-square rounded-full flex justify-center items-center bg-primary-low mr-2">
-                    P
+                    <p>{user.lastname?.at(0) + "" + user.firstname?.at(0)}</p>
                   </div>
-                  <p className="mr-4">Account</p>
+                  <p className="mr-4">Compte</p>
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>
-                  <p>My Account</p>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <Link to={(isWorker ? "/w" : "/u") + "/account"}>
-                  <DropdownMenuItem>
-                    <p>Paramètres</p>
+              </Link>
+            ) : (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="p-1">
+                    <div className="h-full aspect-square rounded-full flex justify-center items-center bg-primary-low mr-2">
+                      <p>{user.lastname?.at(0) + "" + user.firstname?.at(0)}</p>
+                    </div>
+                    <p className="mr-4">Compte</p>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>
+                    <p>My Account</p>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <Link to={(user?.role === "w" ? "/w" : "/u") + "/account"}>
+                    <DropdownMenuItem>
+                      <p>Paramètres</p>
+                    </DropdownMenuItem>
+                  </Link>
+                  <Link to={user?.role === "w" ? "/w" : "/u/reservations"}>
+                    <DropdownMenuItem>
+                      <p>Reservations</p>
+                    </DropdownMenuItem>
+                  </Link>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={logout}>
+                    <p>Logout</p>
                   </DropdownMenuItem>
-                </Link>
-                <Link to={isWorker ? "/w" : "/u/reservations"}>
-                  <DropdownMenuItem>
-                    <p>Reservations</p>
-                  </DropdownMenuItem>
-                </Link>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <p>Logout</p>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )
           ) : (
             <>
               <Link to="/login">
