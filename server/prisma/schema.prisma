@@ -12,3 +12,103 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum Roles {
+  client
+  worker
+  admin
+}
+
+model User {
+  id             String        @id @default(uuid())
+  name           String
+  address        String
+  email          String        @unique
+  password       String
+  wilaya         Int
+  phoneNumber    String
+  role           Roles
+  workerPrices   WorkerPrices? @relation(fields: [workerPricesId], references: [id])
+  workerPricesId String?
+  clientOrders   Order[]       @relation("clientOrders")
+  workerOrders   Order[]       @relation("workerOrders")
+  Team           Team[]
+}
+
+model Team {
+  id       String       @id @default(uuid())
+  leader   User         @relation(fields: [leaderId], references: [id])
+  leaderId String
+  members  TeamMember[]
+}
+
+model TeamMember {
+  id     String @id @default(uuid())
+  name   String
+  team   Team   @relation(fields: [teamId], references: [id])
+  teamId String
+}
+
+// possible services are : 
+model WorkerPrices {
+  id                 String   @id @default(uuid())
+  services           String[]
+  priceForMeter      Float?
+  priceForWindow     Float?
+  priceForInsideCar  Float?
+  priceForOutsideCar Float?
+  priceForAllCar     Float?
+  priceForRoom       Float?
+  priceForDish       Float?
+  worker             User[]
+}
+
+enum OrderStates {
+  pending
+  accepted
+  refused
+  cancelled
+  done
+}
+
+enum OrderType {
+  pool
+  afterEvent
+  restaurant
+  window
+  car
+  house
+  dish
+}
+
+model Order {
+  id       String      @id @default(uuid())
+  date     DateTime
+  state    OrderStates @default(pending)
+  price    Float
+  type     String
+  client   User        @relation("clientOrders", fields: [clientId], references: [id])
+  clientId String
+  worker   User        @relation("workerOrders", fields: [workerId], references: [id])
+  workerId String
+
+  numberOfDishes  Int?
+  numberOfWindows Int?
+  numberOfRooms   Int?
+  meters          Float?
+  carCleaning     CarTypes?
+}
+
+enum CarTypes {
+  inside
+  outside
+  all
+}
+
+model Offer {
+  id                  String   @id @default(uuid())
+  description         String
+  startDate           DateTime
+  endDate             DateTime
+  reductionPercentage Float
+}
