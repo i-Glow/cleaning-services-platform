@@ -53,13 +53,9 @@ export default function Register() {
         </div>
       </div>
       <div className="hidden bg-muted lg:block">
-        <div
-          // src="/placeholder.svg"
-          // alt="Image"
-          // width="1920"
-          // height="1080"
-          className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-        />
+        <div className="h-full w-full bg-white object-cover dark:brightness-[0.2] dark:grayscale">
+          <img src="/src/assets/signup.jpg" alt="" />
+        </div>
       </div>
     </div>
   );
