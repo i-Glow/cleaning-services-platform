@@ -98,15 +98,15 @@ export const updateWorker = async (req: Request, res: Response) => {
   try {
     const { id, name, email, address, phoneNumber, wilaya, services } =
       req.body;
-    const {
-      priceForAllCar,
-      priceForOutsideCar,
-      priceForInsideCar,
-      priceForDish,
-      priceForMeter,
-      priceForRoom,
-      priceForWindow,
-    } = req.body.prices;
+    // const {
+    //   priceForAllCar,
+    //   priceForOutsideCar,
+    //   priceForInsideCar,
+    //   priceForDish,
+    //   priceForMeter,
+    //   priceForRoom,
+    //   priceForWindow,
+    // } = req.body.prices;
 
     const worker = await db.user.update({
       where: {
@@ -121,13 +121,7 @@ export const updateWorker = async (req: Request, res: Response) => {
         workerPrices: {
           update: {
             services,
-            priceForAllCar,
-            priceForOutsideCar,
-            priceForInsideCar,
-            priceForDish,
-            priceForMeter,
-            priceForRoom,
-            priceForWindow,
+            ...req.body.prices,
           },
         },
       },

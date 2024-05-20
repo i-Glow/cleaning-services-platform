@@ -5,7 +5,6 @@ import {
   useEffect,
   SetStateAction,
 } from "react";
-// import { refreshToken } from "../../api/auth/client";
 
 type Context = {
   user?: User;
@@ -30,14 +29,10 @@ export const AuthProvider = ({ children }: any): any => {
   useEffect(() => {
     async function getUser() {
       try {
-        // const res = await refreshToken();
-        // setUser({ token: res.data.accessToken });
-        setUser({
-          firstname: "Hakim",
-          lastname: "Azizi",
-          email: "azizih@gmail.com",
-          role: "w",
-        });
+        const res = localStorage.getItem("user");
+        if (!res) return setLoading(false);
+
+        setUser(JSON.parse(res));
 
         setLoading(false);
       } catch (error) {

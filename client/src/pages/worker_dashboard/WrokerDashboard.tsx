@@ -1,25 +1,43 @@
+import { getWorkerOrders } from "@/api/worker";
 import Nav from "@/components/Nav";
 import { Tabs } from "@/components/ui/tabs";
+import { useAuth } from "@/lib/context/auth";
 import { TabsList, TabsTrigger } from "@radix-ui/react-tabs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Tab from "./Tab";
 
 export default function WrokerDashboard() {
-  const [tab, setTab] = useState<OfferTypes>("new");
+  const { user } = useAuth();
+  const [tab, setTab] = useState<OfferTypes>("pending");
+  const [orders, setOrders] = useState<Order[]>([]);
+
+  const initialOrders = async () => {
+    try {
+      const res = await getWorkerOrders(user?.id!);
+
+      setOrders(res.data.orders.filter((el: any) => el.state === tab));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    initialOrders();
+  }, [tab]);
 
   return (
     <main className="w-full">
       <Nav />
-      <div className="w-[1440px] mx-auto">
+      <div className="max-w-[1440px] mx-10 lg:mx-auto">
         <Tabs
-          defaultValue="new"
+          defaultValue="pending"
           onValueChange={(val) => setTab(val as OfferTypes)}
         >
           <TabsList className="flex gap-3">
             <TabsTrigger
-              value="new"
+              value="pending"
               className={
-                (tab === "new" ? `bg-muted rounded-sm border` : "") +
+                (tab === "pending" ? `bg-muted rounded-sm border` : "") +
                 " px-3 py-1"
               }
             >
@@ -35,34 +53,34 @@ export default function WrokerDashboard() {
               Accepté
             </TabsTrigger>
             <TabsTrigger
-              value="finished"
+              value="done"
               className={
-                (tab === "finished" ? `bg-muted rounded-sm border` : "") +
+                (tab === "done" ? `bg-muted rounded-sm border` : "") +
                 " px-3 py-1"
               }
             >
               Terminé
             </TabsTrigger>
             <TabsTrigger
-              value="canceled"
+              value="cancelled"
               className={
-                (tab === "canceled" ? `bg-muted rounded-sm border` : "") +
+                (tab === "cancelled" ? `bg-muted rounded-sm border` : "") +
                 " px-3 py-1"
               }
             >
               Annulé
             </TabsTrigger>
             <TabsTrigger
-              value="rejected"
+              value="refused"
               className={
-                (tab === "rejected" ? `bg-muted rounded-sm border` : "") +
+                (tab === "refused" ? `bg-muted rounded-sm border` : "") +
                 " px-3 py-1"
               }
             >
               Refusé
             </TabsTrigger>
           </TabsList>
-          <Tab type={tab} />
+          <Tab type={tab} orders={orders} />
         </Tabs>
       </div>
     </main>

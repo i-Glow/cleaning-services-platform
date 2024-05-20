@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 
 let db = new PrismaClient();
 
-
 export const signIn = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;

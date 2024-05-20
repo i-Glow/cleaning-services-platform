@@ -2,8 +2,8 @@ import { Facebook, Instagram, Mail, Phone } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="w-full">
-      <div className="flex justify-center gap-20 py-20">
+    <footer className="w-full bg-background-alt">
+      <div className="flex flex-wrap justify-center gap-16 py-20">
         <div className="[&>*]:mb-2">
           <div className="flex">
             <h2 className="text-primary">ANC</h2>

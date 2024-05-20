@@ -44,7 +44,7 @@ export const placeOrder = async (req: Request, res: Response) => {
         type,
         client: { connect: { id: clientId } },
         worker: { connect: { id: workerId } },
-        workerId,
+        // workerId,
         numberOfDishes,
         numberOfWindows,
         numberOfRooms,

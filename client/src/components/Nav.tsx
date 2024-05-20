@@ -15,26 +15,33 @@ export default function Nav() {
 
   const logout = () => {
     setUser(undefined);
+    localStorage.removeItem("user");
   };
 
   return (
     <nav className="w-full">
-      <div className="flex items-center justify-center gap-32 py-4">
-        <div className="flex">
-          <h2 className="text-primary">ANC</h2>
-          <h2>Clean</h2>
-        </div>
-        <div className="flex gap-4 items-center">
+      <div className="flex items-center justify-center lg:gap-32 gap-4 py-4">
+        <Link to="/">
+          <div className="flex items-center">
+            <h2 className="text-primary text-lg sm:text-2xl">ANC</h2>
+            <h2 className="text-lg sm:text-2xl">Clean</h2>
+          </div>
+        </Link>
+        <div className="flex gap-1 md:gap-4 items-center">
           <Link to="/">Accueil</Link>
           <Link to="/services">Services</Link>
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-1 md:gap-4">
           {!!user ? (
-            user.role === "a" ? (
+            user.role === "admin" ? (
               <Link to="/a/partenaires">
                 <Button variant="ghost" className="p-1">
                   <div className="h-full aspect-square rounded-full flex justify-center items-center bg-primary-low mr-2">
-                    <p>{user.lastname?.at(0) + "" + user.firstname?.at(0)}</p>
+                    <p>
+                      {user.name.split(" ")[0].at(0) +
+                        "" +
+                        (user.name.split(" ")[1]?.at(0) || "")}
+                    </p>
                   </div>
                   <p className="mr-4">Compte</p>
                 </Button>
@@ -44,7 +51,11 @@ export default function Nav() {
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="p-1">
                     <div className="h-full aspect-square rounded-full flex justify-center items-center bg-primary-low mr-2">
-                      <p>{user.lastname?.at(0) + "" + user.firstname?.at(0)}</p>
+                      <p>
+                        {user.name.split(" ")[0].at(0) +
+                          "" +
+                          (user.name.split(" ")[1]?.at(0) || "")}
+                      </p>
                     </div>
                     <p className="mr-4">Compte</p>
                   </Button>
@@ -54,12 +65,14 @@ export default function Nav() {
                     <p>My Account</p>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <Link to={(user?.role === "w" ? "/w" : "/u") + "/account"}>
+                  <Link
+                    to={(user?.role === "worker" ? "/w" : "/u") + "/account"}
+                  >
                     <DropdownMenuItem>
                       <p>Paramètres</p>
                     </DropdownMenuItem>
                   </Link>
-                  <Link to={user?.role === "w" ? "/w" : "/u/reservations"}>
+                  <Link to={user?.role === "worker" ? "/w" : "/u/reservations"}>
                     <DropdownMenuItem>
                       <p>Reservations</p>
                     </DropdownMenuItem>
@@ -74,10 +87,10 @@ export default function Nav() {
           ) : (
             <>
               <Link to="/login">
-                <Button className="px-6">Login</Button>
+                <Button className="px-4 sm:px-6">Login</Button>
               </Link>
               <Link to="/register">
-                <Button className="px-6">Register</Button>
+                <Button className="px-4 sm:px-6">Register</Button>
               </Link>
             </>
           )}

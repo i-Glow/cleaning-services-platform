@@ -1,10 +1,26 @@
+import { getLoyalty } from "@/api/client";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { useAuth } from "@/lib/context/auth";
 import { Gift } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Fidelity() {
-  const [progress, setProgress] = useState(4);
+  const { user } = useAuth();
+  const [progress, setProgress] = useState(0);
+
+  const getFidelityCount = async (userId: string) => {
+    try {
+      const res = await getLoyalty(userId);
+
+      setProgress(res.data.count);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getFidelityCount(user?.id!);
+  }, []);
 
   return (
     <div className="w-max border rounded-sm p-4 flex justify-between gap-10">
@@ -12,7 +28,10 @@ export default function Fidelity() {
         <p>Utiliser nos services et gagner un cadeau</p>
         <div className="flex gap-2 relative w-max">
           <div className="h-6 min-w-64 rounded-lg border overflow-hidden">
-            <div className={cn("h-full bg-primary pt-1 pl-3", `w-4/6`)}>
+            <div
+              className="h-full bg-primary pt-1 pl-3"
+              style={{ width: (progress / 6) * 100 + "%" }}
+            >
               <div className="w-1/2 h-1/3 bg-white/40 rounded-full"></div>
             </div>
           </div>

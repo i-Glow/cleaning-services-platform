@@ -1,9 +1,17 @@
 import express, { Request, Response } from "express";
+import cors from "cors";
 
 // Express is a web application framework for Node.js
 // It is used to build web applications and APIs
 const app = express();
 const port = 5000;
+
+// This allows specific domains to access our API and prevents unwated ones from reaching it
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
 
 app.use(express.json()); // Add this line to enable JSON parsing
 
@@ -18,17 +26,17 @@ app.listen(port, () => {
 });
 
 // Routes for the client
-const clientRouter = require("Routes/client");
+import clientRouter from "./Routes/client";
 app.use("/api/client", clientRouter);
 
 // Routes for the worker
-const workerRouter = require("Routes/worker");
+import workerRouter from "./Routes/worker";
 app.use("/api/worker", workerRouter);
 
 // Routes for the admin
-const adminRouter = require("Routes/admin");
+import adminRouter from "./Routes/admin";
 app.use("/api/admin", adminRouter);
 
 // Routes for the auth
-const authRouter = require("Routes/auth");
+import authRouter from "./Routes/auth";
 app.use("/api/auth", authRouter);

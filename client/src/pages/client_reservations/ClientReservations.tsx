@@ -10,7 +10,6 @@ import {
   MapPin,
   Ruler,
   User,
-  X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import Fidelity from "./Fidelity";
@@ -27,75 +26,13 @@ export default function ClientReservations() {
     (offer) => offer.status !== "accepted" && offer.status !== "new"
   );
 
-  const getOffers = (type: OfferTypes) => {
-    setOffers([
-      {
-        id: "c29",
-        type: "Maison",
-        client: "Abdelhamid Sebki",
-        worker: "Abdelhamid Sebki",
-        address: "16 logts, Sidi Ammar, Annaba",
-        surface: 46,
-        date: "17 Novermber 2024, 13:00",
-        price: 7200,
-        status: "rejected",
-      },
-      {
-        id: "c29",
-        client: "Abdelhamid Sebki",
-        type: "Maison",
-        worker: "Abdelhamid Sebki",
-        address: "16 logts, Sidi Ammar, Annaba",
-        surface: 46,
-        date: "17 Novermber 2024, 13:00",
-        price: 7200,
-        status: "new",
-      },
-      {
-        id: "c39",
-        client: "Abdelhamid Sebki",
-        type: "Maison",
-        worker: "Abdelhamid Sebki",
-        address: "UV4 logts, Sidi Ammar, Annaba",
-        surface: 46,
-        date: "17 Novermber 2024, 13:00",
-        price: 7200,
-        status: "finished",
-      },
-      {
-        id: "f39",
-        client: "Abdelhamid Sebki",
-        type: "Apres Chantier",
-        worker: "Abdelhamid Sebki",
-        address: "UV4 logts, Sidi Ammar, Annaba",
-        surface: 46,
-        date: "17 Novermber 2024, 13:00",
-        price: 7200,
-        status: "accepted",
-      },
-      {
-        id: "a20",
-        client: "Abdelhamid Sebki",
-        type: "Piscine",
-        worker: "Abdelhamid Sebki",
-        address: "UV4 logts, Sidi Ammar, Annaba",
-        surface: 46,
-        date: "17 Novermber 2024, 13:00",
-        price: 7200,
-        status: "canceled",
-      },
-      {
-        id: "a20",
-        client: "Abdelhamid Sebki",
-        type: "Piscine",
-        worker: "Abdelhamid Sebki",
-        address: "UV4 logts, Sidi Ammar, Annaba",
-        surface: 46,
-        date: "17 Novermber 2024, 13:00",
-        price: 7200,
-        status: "canceled",
-      },
-    ]);
+  const getOffers = async (type: OfferTypes) => {
+    try {
+      // TODO: api doesn't exist
+      setOffers([]);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -105,7 +42,7 @@ export default function ClientReservations() {
   return (
     <main>
       <Nav />
-      <div className="max-w-[1280px] mx-auto my-10">
+      <div className="max-w-[1280px] mx-10 lg:mx-auto my-10">
         <Fidelity />
         <div className="mt-6">
           <p className="mb-4">Commandes en cours</p>

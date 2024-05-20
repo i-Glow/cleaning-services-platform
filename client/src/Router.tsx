@@ -35,18 +35,18 @@ export default function Router() {
             <Route path=":service" element={<Service />} />
           </Route>
           <Route path="/partenaire/:id" element={<WorkerProfile />} />
-          <Route element={<ProtectedRoute role="a" />}>
+          <Route element={<ProtectedRoute role="admin" />}>
             <Route path="/a" element={<AdminDashboard />}>
               <Route index path="partenaires" element={<Partners />} />
               <Route path="offres" element={<Offers />} />
               <Route path="fidelite" element={<Fidelity />} />
             </Route>
           </Route>
-          <Route element={<ProtectedRoute role="w" />}>
+          <Route element={<ProtectedRoute role="worker" />}>
             <Route path="/w/account" element={<WorkerAccount />} />
             <Route path="/w" element={<WrokerDashboard />} />
           </Route>
-          <Route element={<ProtectedRoute role="u" />}>
+          <Route element={<ProtectedRoute role="client" />}>
             <Route path="/u/account" element={<ClientAccount />} />
             <Route path="/u/reservations" element={<ClientReservations />} />
           </Route>

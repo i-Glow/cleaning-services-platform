@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import Nav from "@/components/Nav";
 import services from "@/utils/services";
 import { Link, Outlet, useLocation } from "react-router-dom";
@@ -8,7 +9,7 @@ export default function Services() {
   return (
     <main>
       <Nav />
-      <div className="max-w-[1280px] mx-auto">
+      <div className="max-w-[1280px] mx-4 lg:mx-auto">
         <h2 className="font-primary mb-4">Services</h2>
         <div className="flex flex-wrap gap-4">
           {services.map((service, key) => (
@@ -28,6 +29,7 @@ export default function Services() {
         </div>
         <Outlet />
       </div>
+      <Footer />
     </main>
   );
 }
