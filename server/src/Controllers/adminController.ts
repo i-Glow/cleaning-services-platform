@@ -62,3 +62,36 @@ export const addWorker = async (req: Request, res: Response) => {
     res.status(500).json({ message: "An error occured" });
   }
 };
+
+export const getWorkers = async (req: Request, res: Response) => {
+  try {
+    const workers = await db.user.findMany({
+      where: { role: "worker" },
+      include: {
+        workerPrices: true,
+      },
+    });
+    res.status(200).json({ workers });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "An error occured" });
+  }
+};
+
+export const addOffer = async (req: Request, res: Response) => {
+  try {
+    const { reductionPercentage, startDate, endDate, description } = req.body;
+    const offer = await db.offer.create({
+      data: {
+        reductionPercentage,
+        startDate: new Date(startDate),
+        endDate: new Date(endDate),
+        description,
+      },
+    });
+    res.status(201).json({ message: "Offer added successfully", offer });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "An error occured" });
+  }
+};

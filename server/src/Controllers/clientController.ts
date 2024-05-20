@@ -96,3 +96,18 @@ export const cancelOrder = async (req: Request, res: Response) => {
     res.status(500).json({ message: "An error occured" });
   }
 };
+
+export const getOrders = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const orders = await db.order.findMany({
+      where: {
+        clientId: userId,
+      },
+    });
+    res.status(200).json({ orders });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "An error occured" });
+  }
+};

@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import {
   cancelOrder,
   getLoyalty,
+  getOrders,
   placeOrder,
   updateUser,
 } from "../Controllers/clientController";
@@ -108,5 +109,7 @@ router.put("/updateUser", updateUser);
 // }
 //
 router.put("/cancelOrder", cancelOrder);
+
+router.get("/:userId/orders", getOrders);
 
 export default router;

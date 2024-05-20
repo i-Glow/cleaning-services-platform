@@ -1,5 +1,9 @@
 import express from "express";
-import { addWorker } from "../Controllers/adminController";
+import {
+  addOffer,
+  addWorker,
+  getWorkers,
+} from "../Controllers/adminController";
 
 const router = express.Router();
 
@@ -55,5 +59,9 @@ const router = express.Router();
 //   "message": "An error occured"
 // }
 router.post("/addWorker", addWorker);
+
+router.get("/workers", getWorkers);
+
+router.post("/offer", addOffer);
 
 export default router;
