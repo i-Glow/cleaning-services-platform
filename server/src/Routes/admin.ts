@@ -58,6 +58,7 @@ const router = express.Router();
 // {
 //   "message": "An error occured"
 // }
+// locahlhost:5000/api/admin/addWorker
 router.post("/addWorker", addWorker);
 
 router.get("/workers", getWorkers);

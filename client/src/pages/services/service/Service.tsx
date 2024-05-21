@@ -42,6 +42,15 @@ export default function Service() {
 
   const [selectedCity, setSelectedCity] = useState(user?.wilaya! || 0);
   const [posts, setPosts] = useState<Partner[]>([]);
+  const prices = {
+    priceForDish: "prix pour la vaisselle",
+    priceForRoom: "prix pour la chambre",
+    priceForWindow: "prix pour la fenêtre",
+    priceForMeter: "prix pour le mètre carré",
+    priceForAllCar: "prix pour toute la voiture",
+    priceForInsideCar: "prix pour l'intérieur de la voiture",
+    priceForOutsideCar: "prix pour l'extérieur de la voiture",
+  };
 
   const getServicePosts = async (service: string, city: number) => {
     try {
@@ -174,7 +183,7 @@ export default function Service() {
                         key !== "services" &&
                         price && (
                           <p key={key}>
-                            {key}: {price} DA
+                            {prices[key]}: {price} DA
                           </p>
                         )
                     )}

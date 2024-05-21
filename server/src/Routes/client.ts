@@ -12,7 +12,7 @@ const router = express.Router();
 // this route is used to get how many orders the client already made
 // the request for this controller should be structered as followed
 // localhost:5000/client/getLoyalty/{id}
-// example : localhost:5000/client/getLoyalty/25
+// example : localhost:5000/api/client/getLoyalty/95u320769273
 // the response for this controller should be structered as followed
 // {
 //   "message": "Order count fetched successfully",

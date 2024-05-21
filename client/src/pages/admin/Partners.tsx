@@ -35,6 +35,15 @@ export default function Partners() {
   const { toast } = useToast();
 
   const [partners, setPartners] = useState([]);
+  const prices = {
+    priceForDish: "prix pour la vaisselle",
+    priceForRoom: "prix pour la chambre",
+    priceForWindow: "prix pour la fenêtre",
+    priceForMeter: "prix pour le mètre carré",
+    priceForAllCar: "prix pour toute la voiture",
+    priceForInsideCar: "prix pour l'intérieur de la voiture",
+    priceForOutsideCar: "prix pour l'extérieur de la voiture",
+  };
   const [details, setDetails] = useState<WorkerAccount>({
     address: "",
     email: "",
@@ -160,7 +169,7 @@ export default function Partners() {
                   ].map((svc) => (
                     <Input
                       key={svc}
-                      placeholder={svc}
+                      placeholder={prices[svc]}
                       type="number"
                       onChange={(e) =>
                         setDetails((prev) => ({

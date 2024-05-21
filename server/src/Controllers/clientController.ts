@@ -9,7 +9,7 @@ export const getLoyalty = async (req: Request, res: Response) => {
     const countOrders = await db.order.count({
       where: {
         clientId: id,
-        state: { not: "cancelled" },
+        state: "done",
       },
     });
     res.status(200).json({

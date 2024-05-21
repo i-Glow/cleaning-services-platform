@@ -10,7 +10,6 @@ import { useAuth } from "@/lib/context/auth";
 export default function Login() {
   const { setUser } = useAuth();
   const navigate = useNavigate();
-
   const formRef = useRef(null);
 
   const handleLogin = async (e: FormEvent) => {
@@ -30,7 +29,7 @@ export default function Login() {
       // save user details in disk
       localStorage.setItem("user", JSON.stringify(res.data.user));
       // navigate to the home page
-      navigate("/");
+      navigate("/services");
     } catch (error) {
       console.error(error);
     }
