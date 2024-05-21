@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 import { AuthProvider, useAuth } from "./lib/context/auth";
 import AdminDashboard from "./pages/admin/AdminDashboard";
-import Fidelity from "./pages/admin/Fidelity";
 import Offers from "./pages/admin/Offers";
 import Partners from "./pages/admin/Partners";
 import ClientAccount from "./pages/client_account/ClientAccount";
@@ -39,7 +38,6 @@ export default function Router() {
             <Route path="/a" element={<AdminDashboard />}>
               <Route index path="partenaires" element={<Partners />} />
               <Route path="offres" element={<Offers />} />
-              <Route path="fidelite" element={<Fidelity />} />
             </Route>
           </Route>
           <Route element={<ProtectedRoute role="worker" />}>

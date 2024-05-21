@@ -2,4 +2,8 @@ import axios from "./index";
 
 const addWorker = async (data) => await axios.post("/admin/addWorker", data);
 
-export { addWorker };
+const getWorkers = async () => await axios.get("/admin/workers");
+
+const addOffer = async (data: any) => await axios.post("/admin/offer", data);
+
+export { addWorker, getWorkers, addOffer };

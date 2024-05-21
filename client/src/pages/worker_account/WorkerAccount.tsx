@@ -49,7 +49,7 @@ export default function WorkerAccount() {
       );
       setEditMode(false);
       toast({
-        title: "information bien modifie",
+        title: "information bien modifié",
         type: "foreground",
         duration: 5000,
         className: "bg-green-500 text-white",

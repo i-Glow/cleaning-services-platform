@@ -35,12 +35,6 @@ export default function AdminDashboard() {
           >
             Offres
           </Link>
-          <Link
-            to="/a/fidelite"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Fidelite
-          </Link>
         </nav>
         <Sheet>
           <SheetTrigger asChild>
@@ -71,12 +65,6 @@ export default function AdminDashboard() {
                 className="text-muted-foreground hover:text-foreground"
               >
                 Offres
-              </Link>
-              <Link
-                to="/a/fidelite"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                Fidelite
               </Link>
             </nav>
           </SheetContent>

@@ -11,4 +11,6 @@ const updateUser = async (data: User) =>
 const cancelOrder = async (data) =>
   await axios.put(`/client/cancelOrder`, data);
 
-export { getLoyalty, placeOrder, updateUser, cancelOrder };
+const getOrders = async (id: string) => await axios.get(`/client/${id}/orders`);
+
+export { getLoyalty, placeOrder, updateUser, cancelOrder, getOrders };

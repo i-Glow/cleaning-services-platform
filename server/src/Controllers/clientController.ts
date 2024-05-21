@@ -104,6 +104,9 @@ export const getOrders = async (req: Request, res: Response) => {
       where: {
         clientId: userId,
       },
+      include: {
+        worker: true,
+      },
     });
     res.status(200).json({ orders });
   } catch (error) {

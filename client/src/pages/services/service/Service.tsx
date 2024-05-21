@@ -42,6 +42,8 @@ export default function Service() {
 
   const [selectedCity, setSelectedCity] = useState(user?.wilaya! || 0);
   const [posts, setPosts] = useState<Partner[]>([]);
+  const [qty, setQty] = useState<number>();
+
   const prices = {
     priceForDish: "prix pour la vaisselle",
     priceForRoom: "prix pour la chambre",
@@ -62,10 +64,10 @@ export default function Service() {
     }
   };
 
-  const getApiServiceName = (): string => {
-    const service = location.pathname.split("/").at(-1);
-    const apiServiceName = services.find((svc) => svc.link === service)?.api;
+  const service = location.pathname.split("/").at(-1);
+  const apiServiceName = services.find((svc) => svc.link === service)?.api;
 
+  const getApiServiceName = (): string => {
     return apiServiceName as string;
   };
 
@@ -96,7 +98,7 @@ export default function Service() {
     };
 
     try {
-      const res = await placeOrder(payload);
+      await placeOrder(payload);
 
       toast({
         title: "Commande place",
@@ -183,7 +185,7 @@ export default function Service() {
                         key !== "services" &&
                         price && (
                           <p key={key}>
-                            {prices[key]}: {price} DA
+                            {prices[key as keyof typeof prices]}: {price} DA
                           </p>
                         )
                     )}
@@ -205,41 +207,34 @@ export default function Service() {
                         </DialogHeader>
                         <Input name="date" type="date" required />
                         <Input
-                          name="price"
-                          placeholder="price"
-                          type="number"
-                          required
-                        />
-                        <Input
-                          name="numberOfDishes"
-                          placeholder="Vaissels"
+                          onChange={(e) => setQty(e.target.valueAsNumber)}
+                          value={qty}
+                          name={apiServiceName}
+                          placeholder={service}
                           type="number"
                         />
-                        <Input
-                          name="numberOfWindows"
-                          placeholder="Vitres"
-                          type="number"
-                        />
-                        <Input
-                          name="numberOfRooms"
-                          placeholder="Chambres"
-                          type="number"
-                        />
-                        <Input
-                          name="meters"
-                          placeholder="Metres"
-                          type="number"
-                        />
-                        <Select name="carCleaning">
-                          <SelectTrigger>
-                            <SelectValue placeholder="type voiture" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="inside">intérieur</SelectItem>
-                            <SelectItem value="outside">extérieur</SelectItem>
-                            <SelectItem value="all">tous</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        {service === "voiture" && (
+                          <Select name="carCleaning">
+                            <SelectTrigger>
+                              <SelectValue placeholder="type voiture" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="inside">intérieur</SelectItem>
+                              <SelectItem value="outside">extérieur</SelectItem>
+                              <SelectItem value="all">tous</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        )}
+                        <p className="pl-3">
+                          {/* TODO: THIS MADE ME CRY */}
+                          prix totale: {/* @ts-ignore */}
+                          {post.workerPrices[
+                            "priceFor" +
+                              apiServiceName?.at(0)?.toUpperCase() +
+                              apiServiceName?.slice(0)
+                          ] * qty! || 0}{" "}
+                          DA
+                        </p>
                         <DialogFooter>
                           <Button type="submit">Commander</Button>
                         </DialogFooter>

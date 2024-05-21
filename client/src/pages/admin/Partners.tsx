@@ -1,12 +1,7 @@
-import { addWorker } from "@/api/admin";
+import { addWorker, getWorkers } from "@/api/admin";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -28,22 +23,12 @@ import { useToast } from "@/components/ui/use-toast";
 import cities from "@/utils/cities";
 import services from "@/utils/services";
 import { CirclePlus, CircleUserRound } from "lucide-react";
-import { FormEvent, SetStateAction, useState } from "react";
-import CardButton from "../worker_dashboard/CardButton";
+import { FormEvent, SetStateAction, useEffect, useState } from "react";
 
 export default function Partners() {
   const { toast } = useToast();
 
-  const [partners, setPartners] = useState([]);
-  const prices = {
-    priceForDish: "prix pour la vaisselle",
-    priceForRoom: "prix pour la chambre",
-    priceForWindow: "prix pour la fenêtre",
-    priceForMeter: "prix pour le mètre carré",
-    priceForAllCar: "prix pour toute la voiture",
-    priceForInsideCar: "prix pour l'intérieur de la voiture",
-    priceForOutsideCar: "prix pour l'extérieur de la voiture",
-  };
+  const [partners, setPartners] = useState<WorkerAccount[]>([]);
   const [details, setDetails] = useState<WorkerAccount>({
     address: "",
     email: "",
@@ -56,15 +41,33 @@ export default function Partners() {
     teamMembers: [],
   });
 
-  const getPartners = async () => {};
+  const prices = {
+    priceForDish: "prix pour la vaisselle",
+    priceForRoom: "prix pour la chambre",
+    priceForWindow: "prix pour la fenêtre",
+    priceForMeter: "prix pour le mètre carré",
+    priceForAllCar: "prix pour toute la voiture",
+    priceForInsideCar: "prix pour l'intérieur de la voiture",
+    priceForOutsideCar: "prix pour l'extérieur de la voiture",
+  };
+
+  const getPartners = async () => {
+    try {
+      const res = await getWorkers();
+
+      setPartners(res.data.workers);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleNewWorker = async (e: FormEvent) => {
     e.preventDefault();
 
     try {
       const res = await addWorker(details);
-      console.log(res);
-      // setPartners((prev) => [...prev, res.data.worker])
+
+      setPartners((prev) => [...prev, res.data.worker]);
       setDetails({
         address: "",
         email: "",
@@ -86,6 +89,10 @@ export default function Partners() {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    getPartners();
+  }, []);
 
   return (
     <main className="my-10">
@@ -169,7 +176,7 @@ export default function Partners() {
                   ].map((svc) => (
                     <Input
                       key={svc}
-                      placeholder={prices[svc]}
+                      placeholder={prices[svc as keyof typeof prices]}
                       type="number"
                       onChange={(e) =>
                         setDetails((prev) => ({
@@ -193,24 +200,35 @@ export default function Partners() {
             </form>
           </DialogContent>
         </Dialog>
-        {[...Array(5)].map((el) => (
-          <Card className="overflow-hidden" key={el}>
+        {partners.map((partner) => (
+          <Card className="overflow-hidden" key={partner.id}>
             <CardHeader>
               <div className="flex gap-2">
                 <CircleUserRound />
-                <p>Mohammed</p>
+                <p>{partner.name}</p>
               </div>
             </CardHeader>
             <CardContent>
-              <p>Sexe: Homme</p>
-              <p>Email: mou256@gmail.com</p>
-              <p>Telephone: 0987654321</p>
-              <p>Specialites: Voiture, maison</p>
-              <p>Adresse: Oran</p>
+              <p>Email: {partner.email}</p>
+              <p>Telephone: {partner.phoneNumber}</p>
+              <p>
+                Specialites:{" "}
+                {partner?.workerPrices?.services.map(
+                  (svc, idx) =>
+                    services.find((service) => service.api === svc)?.name +
+                    (idx < partner?.workerPrices?.services?.length! - 1
+                      ? ", "
+                      : "")
+                )}
+              </p>
+              <p>
+                Adresse:{" "}
+                {
+                  cities.find((city) => city.id === String(partner.wilaya))
+                    ?.name
+                }
+              </p>
             </CardContent>
-            <CardFooter className="p-0">
-              <CardButton variant="danger">Supprimer</CardButton>
-            </CardFooter>
           </Card>
         ))}
       </div>

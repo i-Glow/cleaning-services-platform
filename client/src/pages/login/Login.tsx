@@ -29,7 +29,20 @@ export default function Login() {
       // save user details in disk
       localStorage.setItem("user", JSON.stringify(res.data.user));
       // navigate to the home page
-      navigate("/services");
+
+      switch (res.data.user.role) {
+        case "client":
+          navigate("/");
+          break;
+        case "worker":
+          navigate("/w");
+          break;
+        case "admin":
+          navigate("/a/partenaires");
+          break;
+        default:
+          navigate("/");
+      }
     } catch (error) {
       console.error(error);
     }

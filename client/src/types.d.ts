@@ -12,6 +12,7 @@ type User = {
 };
 
 type WorkerAccount = {
+  id?: string;
   name: string;
   email: string;
   password: string;
@@ -43,15 +44,30 @@ type WorkerAccount = {
 };
 
 type Offer = {
-  id: string;
-  type: string;
-  client: string;
-  worker: string;
-  address: string;
-  surface: number;
+  carCleaning: string;
+  clientId: string;
   date: string;
+  id: string;
+  meters: number;
+  numberOfDishes: number;
+  numberOfRooms: number;
+  numberOfWindows: number;
   price: number;
-  status: OfferTypes;
+  state: OfferTypes;
+  type: string;
+  worker: {
+    id: string;
+    address: string;
+    email: string;
+    id: string;
+    name: string;
+    password: string;
+    phoneNumber: string;
+    role: string;
+    wilaya: number;
+    workerPricesId: string;
+  };
+  workerId: string;
 };
 
 type OfferTypes = "pending" | "accepted" | "done" | "refused" | "cancelled";
@@ -63,17 +79,18 @@ type Partner = {
   password: string;
   address: string;
   phoneNumber: string;
+  services: string[];
   wilaya: number;
   workerPrices: {
     id: string;
     services: string[];
-    priceForAllCar: string;
-    priceForOutsideCar: string;
-    priceForInsideCar: string;
-    priceForDish: string;
-    priceForMeter: string;
-    priceForRoom: string;
-    priceForWindow: string;
+    priceForAllCar: number;
+    priceForOutsideCar: number;
+    priceForInsideCar: number;
+    priceForDish: number;
+    priceForMeter: number;
+    priceForRoom: number;
+    priceForWindow: number;
   };
   role: "worker";
   teamMemberCount: number;
