@@ -29,6 +29,7 @@ export default function Partners() {
   const { toast } = useToast();
 
   const [partners, setPartners] = useState<WorkerAccount[]>([]);
+  const [team, setTeam] = useState("");
   const [details, setDetails] = useState<WorkerAccount>({
     address: "",
     email: "",
@@ -65,7 +66,9 @@ export default function Partners() {
     e.preventDefault();
 
     try {
-      const res = await addWorker(details);
+      const teamMembers = team.split(",").map((mbr) => ({ name: mbr }));
+
+      const res = await addWorker({ ...details, teamMembers });
 
       setPartners((prev) => [...prev, res.data.worker]);
       setDetails({
@@ -163,7 +166,16 @@ export default function Partners() {
                   <p className="text-sm pl-2 font-medium">services:</p>
                   <ServiceSelector setValue={setDetails} value={details} />
                 </div>
+                <div></div>
                 <div className="flex flex-col gap-2 flex-1">
+                  <p className="text-sm pl-2 font-medium">Equipe:</p>
+                  <Input
+                    type="text"
+                    placeholder="John, Jane, Doe"
+                    onChange={(e) => {
+                      setTeam(e.target.value);
+                    }}
+                  />
                   <p className="text-sm pl-2 font-medium">prix des services:</p>
                   {[
                     "priceForAllCar",
@@ -191,7 +203,7 @@ export default function Partners() {
                   ))}
                 </div>
               </div>
-              <DialogFooter>
+              <DialogFooter className="mt-4">
                 <Button variant="outline" type="reset">
                   Annuler
                 </Button>

@@ -106,7 +106,7 @@ type OrderDetails = {
   numberOfWindows?: number;
   numberOfRooms?: number;
   meters?: number;
-  carCleaning?: "inside" | "outside" | "all";
+  carCleaning: "inside" | "outside" | "all" | "";
 };
 
 type Order = {

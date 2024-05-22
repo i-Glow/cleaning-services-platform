@@ -97,6 +97,7 @@ export default function Service() {
         ];
       totalPrice += Number(workerPrice) * Number(userInput);
     });
+
     if (serviceName == "car") {
       switch (String(data.carCleaning)) {
         case "outside":
@@ -154,10 +155,8 @@ export default function Service() {
       type: getApiServiceName(),
       clientId: user.id!,
       workerId,
+      carCleaning: data.carCleaning,
     };
-    if (data.carCleaning != null) {
-      payload.carCleaning = String(data.carCleaning);
-    }
 
     try {
       await placeOrder(payload);
@@ -369,32 +368,6 @@ export default function Service() {
                         }
                         {
                           // @ts-ignore
-                          location.pathname.split("/")[2] ===
-                            "apres-evenment" && (
-                            <>
-                              <Input
-                                name="numberOfDishes"
-                                type="number"
-                                required
-                                placeholder="Nombre de vaisselle"
-                                onChange={() => {
-                                  countTotal(post.id);
-                                }}
-                              />
-                              <Input
-                                name="meters"
-                                type="number"
-                                required
-                                placeholder="Nombre de mètres carrés"
-                                onChange={() => {
-                                  countTotal(post.id);
-                                }}
-                              />
-                            </>
-                          )
-                        }
-                        {
-                          // @ts-ignore
                           location.pathname.split("/")[2] === "piscine" && (
                             <Input
                               name="meters"
@@ -422,7 +395,10 @@ export default function Service() {
                           )
                         }
                         {location.pathname.split("/")[2] === "voiture" && (
-                          <Select name="carCleaning">
+                          <Select
+                            name="carCleaning"
+                            onValueChange={() => countTotal(post.id)}
+                          >
                             <SelectTrigger>
                               <SelectValue placeholder="type de nettoyage" />
                             </SelectTrigger>

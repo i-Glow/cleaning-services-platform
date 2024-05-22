@@ -199,8 +199,10 @@ export default function WorkerAccount() {
             <p>Prices: </p>
             <div>
               <Input
-                placeholder="Voiture"
-                value={details?.workerPrices?.priceForAllCar}
+                placeholder={
+                  details?.workerPrices?.priceForAllCar?.toString() || "Voiture"
+                }
+                value={details?.prices?.priceForAllCar}
                 readOnly={!editMode}
                 type="number"
                 onChange={(e) =>

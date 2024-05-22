@@ -69,7 +69,8 @@ function FooterContent({ id, type }: { id: string; type: OfferTypes }) {
   const handleClick = async (state: string) => {
     try {
       const res = await updateOrder({ id, state });
-      console.log(res.data);
+
+      location.reload();
     } catch (error) {
       console.error(error);
     }
