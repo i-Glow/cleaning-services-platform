@@ -18,20 +18,18 @@ export const getWorkers = async (req: Request, res: Response) => {
       include: {
         workerPrices: true,
         Team: {
-          select: {
-            members: {
-              select: {
-                id: true,
-              },
-            },
+          include: {
+            members: true,
           },
         },
       },
     });
-    const workersWithTeamCount = workers.map(({ Team, ...worker }) => ({
+    const workersWithTeamCount = workers.map((worker) => ({
       ...worker,
-      teamMemberCount: Team ? Team.length : 0,
+      teamMemberCount: worker.Team[0].members.length,
     }));
+    console.log(workersWithTeamCount);
+
     res.status(200).json({ workers: workersWithTeamCount });
   } catch (error) {
     console.log(error);

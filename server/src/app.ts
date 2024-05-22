@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import { createAdminAccount } from "./Controllers/authController";
 import cors from "cors";
 
 // Express is a web application framework for Node.js
@@ -24,6 +25,8 @@ app.get("/test", (req: Request, res: Response) => {
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+createAdminAccount();
 
 // Routes for the client
 import clientRouter from "./Routes/client";

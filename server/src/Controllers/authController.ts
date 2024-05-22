@@ -46,22 +46,25 @@ export const signUp = async (req: Request, res: Response) => {
   }
 };
 
-export const createAdminAccount = async (req: Request, res: Response) => {
+export const createAdminAccount = async () => {
   try {
-    const { email, password } = req.body;
-    const admin = await db.user.create({
-      data: {
-        name: "admin",
-        email,
-        password,
-        address: "Admin's address",
-        phoneNumber: "Admin's phone number",
-        wilaya: 0,
-        role: "admin",
-      },
+    const check = await db.user.findFirst({
+      where: { role: "admin" },
     });
-    res
-      .status(201)
-      .json({ message: "Admin account created successfully", admin });
-  } catch (error) {}
+    if (check == null) {
+      const admin = await db.user.create({
+        data: {
+          name: "admin",
+          email: "admin@email.com",
+          password: "password",
+          address: "Admin's address",
+          phoneNumber: "Admin's phone number",
+          wilaya: 0,
+          role: "admin",
+        },
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };

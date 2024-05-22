@@ -66,35 +66,4 @@ router.post("/signIn", signIn);
 // }
 router.post("/signUp", signUp);
 
-// this route is used to create the admin account for the first time
-// This controller is used to create an admin account for the first time;
-// The request for this controller should be structured as follows:
-// {
-//   "name": "admin name",
-//   "email": "admin email",
-//   "password": "admin password",
-//   "address": "admin address",
-//   "phoneNumber": "admin phone number",
-//   "wilaya": "admin wilaya"
-// }
-// The response for this controller should be structured as follows:
-// {
-//   "message": "Admin account created successfully",
-//   "admin": {
-//     "id": "admin id",
-//     "name": "admin name",
-//     "email": "admin email",
-//     "password": "admin password",
-//     "address": "admin address",
-//     "phoneNumber": "admin phone number",
-//     "wilaya": "admin wilaya",
-//     "role": "admin"
-//   }
-// }
-// If an error occurred the response should be structured as follows:
-// {
-//   "message": "An error occurred"
-// }
-router.post("/createAdminAccount", createAdminAccount);
-
 export default router;

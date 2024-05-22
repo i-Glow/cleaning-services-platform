@@ -47,11 +47,13 @@ export const addWorker = async (req: Request, res: Response) => {
       await db.team.create({
         data: {
           leader: { connect: { id: worker.id } },
-          members: req.body.teamMembers.map((member: any) => {
-            return {
-              name: member.name,
-            };
-          }),
+          members: {
+            create: req.body.teamMembers.map((member: any) => {
+              return {
+                name: member.name,
+              };
+            }),
+          },
         },
       });
     }
