@@ -42,7 +42,7 @@ export default function Service() {
 
   const [selectedCity, setSelectedCity] = useState(user?.wilaya! || 0);
   const [posts, setPosts] = useState<Partner[]>([]);
-  const [qty, setQty] = useState<number>();
+  const [total, setTotal] = useState<Number>(0);
 
   const prices = {
     priceForDish: "prix pour la vaisselle",
@@ -52,6 +52,65 @@ export default function Service() {
     priceForAllCar: "prix pour toute la voiture",
     priceForInsideCar: "prix pour l'intérieur de la voiture",
     priceForOutsideCar: "prix pour l'extérieur de la voiture",
+  };
+  const servicesForms = {
+    house: ["priceForDish", "priceForRoom", "priceForWindow"],
+    dish: ["priceForDish"],
+    afterEvent: ["priceForDish", "priceForMeter"],
+    window: ["priceForWindow"],
+    restaurant: ["priceForMeter", "priceForDish"],
+    pool: ["priceForMeter"],
+    car: ["priceForInsideCar", "priceForOutsideCar", "priceForAllCar"],
+  };
+  const servicesNames = {
+    maison: "house",
+    restaurant: "restaurant",
+    piscine: "pool",
+    vitre: "window",
+    vaisseles: "dish",
+    "apres-evenement": "afterEvent",
+    voiture: "car",
+  };
+
+  const countTotal = (workerId: string) => {
+    const formData = new FormData(formRef?.current!);
+    const data: any = Object.fromEntries(formData.entries());
+    const numberXprice = {
+      priceForDish: "numberOfDishes",
+      priceForRoom: "numberOfRooms",
+      priceForWindow: "numberOfWindows",
+      priceForMeter: "meters",
+    };
+    const serviceName =
+      servicesNames[
+        location.pathname.split("/")[2] as keyof typeof servicesNames
+      ];
+    const worker = posts.find((post) => post.id === workerId);
+    const fields = servicesForms[serviceName as keyof typeof servicesForms];
+    let totalPrice = 0;
+
+    fields.map((field) => {
+      let workerPrice = worker?.workerPrices[field as keyof typeof prices] ?? 0;
+      let userInput =
+        data[
+          numberXprice[field as keyof typeof numberXprice] as keyof typeof data
+        ];
+      totalPrice += Number(workerPrice) * Number(userInput);
+    });
+    if (serviceName == "car") {
+      switch (String(data.carCleaning)) {
+        case "outside":
+          totalPrice = Number(worker?.workerPrices["priceForOutsideCar"]);
+          break;
+        case "all":
+          totalPrice = Number(worker?.workerPrices["priceForAllCar"]);
+          break;
+        case "inside":
+          totalPrice = Number(worker?.workerPrices["priceForInsideCar"]);
+          break;
+      }
+    }
+    setTotal(totalPrice);
   };
 
   const getServicePosts = async (service: string, city: number) => {
@@ -83,19 +142,22 @@ export default function Service() {
 
     const formData = new FormData(formRef?.current!);
     const data: any = Object.fromEntries(formData.entries());
+    countTotal(workerId);
 
     const payload: OrderDetails = {
       ...data,
-      price: Number(data.price),
+      price: Number(total),
       numberOfDishes: Number(data.numberOfDishes),
       numberOfRooms: Number(data.numberOfRooms),
       numberOfWindows: Number(data.numberOfWindows),
       meters: Number(data.meters),
       type: getApiServiceName(),
-      carCleaning: String(data.carCleaning) || undefined,
       clientId: user.id!,
       workerId,
     };
+    if (data.carCleaning != null) {
+      payload.carCleaning = String(data.carCleaning);
+    }
 
     try {
       await placeOrder(payload);
@@ -206,17 +268,163 @@ export default function Service() {
                           <p>Placer commande</p>
                         </DialogHeader>
                         <Input name="date" type="date" required />
-                        <Input
-                          onChange={(e) => setQty(e.target.valueAsNumber)}
-                          value={qty}
-                          name={apiServiceName}
-                          placeholder={service}
-                          type="number"
-                        />
-                        {service === "voiture" && (
+                        {
+                          // @ts-ignore
+                          location.pathname.split("/")[2] === "maison" && (
+                            <>
+                              <Input
+                                name="numberOfDishes"
+                                type="number"
+                                required
+                                placeholder="Nombre de vaisselle"
+                                onChange={() => {
+                                  countTotal(post.id);
+                                }}
+                              />
+                              <Input
+                                name="numberOfRooms"
+                                type="number"
+                                required
+                                placeholder="Nombre de chambres"
+                                onChange={() => {
+                                  countTotal(post.id);
+                                }}
+                              />
+                              <Input
+                                name="numberOfWindows"
+                                type="number"
+                                required
+                                placeholder="Nombre de fenêtres"
+                                onChange={() => {
+                                  countTotal(post.id);
+                                }}
+                              />
+                            </>
+                          )
+                        }
+                        {
+                          // @ts-ignore
+                          location.pathname.split("/")[2] ===
+                            "apres-evenement" && (
+                            <>
+                              <Input
+                                name="numberOfDishes"
+                                type="number"
+                                required
+                                placeholder="Nombre de vaisselle"
+                                onChange={() => {
+                                  countTotal(post.id);
+                                }}
+                              />
+                              <Input
+                                name="meters"
+                                type="number"
+                                required
+                                placeholder="Nombre de mètres carrés"
+                                onChange={() => {
+                                  countTotal(post.id);
+                                }}
+                              />
+                            </>
+                          )
+                        }
+                        {
+                          // @ts-ignore
+                          location.pathname.split("/")[2] === "vaisseles" && (
+                            <Input
+                              name="numberOfDishes"
+                              type="number"
+                              required
+                              placeholder="Nombre de vaisselle"
+                              onChange={() => {
+                                countTotal(post.id);
+                              }}
+                            />
+                          )
+                        }
+                        {
+                          // @ts-ignore
+                          location.pathname.split("/")[2] === "restaurant" && (
+                            <>
+                              <Input
+                                name="meters"
+                                type="number"
+                                required
+                                placeholder="Nombre de mètres carrés"
+                                onChange={() => {
+                                  countTotal(post.id);
+                                }}
+                              />
+                              <Input
+                                name="numberOfDishes"
+                                type="number"
+                                required
+                                placeholder="Nombre de vaisselle"
+                                onChange={() => {
+                                  countTotal(post.id);
+                                }}
+                              />
+                            </>
+                          )
+                        }
+                        {
+                          // @ts-ignore
+                          location.pathname.split("/")[2] ===
+                            "apres-evenment" && (
+                            <>
+                              <Input
+                                name="numberOfDishes"
+                                type="number"
+                                required
+                                placeholder="Nombre de vaisselle"
+                                onChange={() => {
+                                  countTotal(post.id);
+                                }}
+                              />
+                              <Input
+                                name="meters"
+                                type="number"
+                                required
+                                placeholder="Nombre de mètres carrés"
+                                onChange={() => {
+                                  countTotal(post.id);
+                                }}
+                              />
+                            </>
+                          )
+                        }
+                        {
+                          // @ts-ignore
+                          location.pathname.split("/")[2] === "piscine" && (
+                            <Input
+                              name="meters"
+                              type="number"
+                              required
+                              placeholder="Nombre de mètres carrés"
+                              onChange={() => {
+                                countTotal(post.id);
+                              }}
+                            />
+                          )
+                        }
+                        {
+                          // @ts-ignore
+                          location.pathname.split("/")[2] === "vitre" && (
+                            <Input
+                              name="numberOfWindows"
+                              type="number"
+                              required
+                              placeholder="Nombre de fenêtres"
+                              onChange={() => {
+                                countTotal(post.id);
+                              }}
+                            />
+                          )
+                        }
+                        {location.pathname.split("/")[2] === "voiture" && (
                           <Select name="carCleaning">
                             <SelectTrigger>
-                              <SelectValue placeholder="type voiture" />
+                              <SelectValue placeholder="type de nettoyage" />
                             </SelectTrigger>
                             <SelectContent>
                               <SelectItem value="inside">intérieur</SelectItem>
@@ -225,15 +433,9 @@ export default function Service() {
                             </SelectContent>
                           </Select>
                         )}
+
                         <p className="pl-3">
-                          {/* TODO: THIS MADE ME CRY */}
-                          prix totale: {/* @ts-ignore */}
-                          {post.workerPrices[
-                            "priceFor" +
-                              apiServiceName?.at(0)?.toUpperCase() +
-                              apiServiceName?.slice(0)
-                          ] * qty! || 0}{" "}
-                          DA
+                          prix totale: {total.toString()}DA
                         </p>
                         <DialogFooter>
                           <Button type="submit">Commander</Button>
