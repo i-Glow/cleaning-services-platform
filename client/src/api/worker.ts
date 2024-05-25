@@ -15,10 +15,14 @@ const updateOrder = async (data: { id: string; state: string }) =>
 const updateUser = async (data: WorkerAccount) =>
   await axios.put(`/worker/updateUser`, data);
 
+const deleteWorker = async (data: string) =>
+  await axios.delete(`/worker/${data}`);
+
 export {
   getOrderDetails,
   getWorkers,
   getWorkerOrders,
   updateOrder,
   updateUser,
+  deleteWorker,
 };

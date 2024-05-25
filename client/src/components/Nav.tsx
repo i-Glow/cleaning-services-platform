@@ -30,6 +30,7 @@ export default function Nav() {
         <div className="flex gap-1 md:gap-4 items-center">
           <Link to="/">Accueil</Link>
           <Link to="/services">Services</Link>
+          <Link to="/offres">Offres</Link>
         </div>
         <div className="flex gap-1 md:gap-4">
           {!!user ? (

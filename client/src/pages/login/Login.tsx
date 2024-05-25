@@ -6,10 +6,13 @@ import { Label } from "@/components/ui/label";
 import { login } from "@/api/auth";
 import { FormEvent, useRef } from "react";
 import { useAuth } from "@/lib/context/auth";
+import { useToast } from "@/components/ui/use-toast";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function Login() {
   const { setUser } = useAuth();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const formRef = useRef(null);
 
   const handleLogin = async (e: FormEvent) => {
@@ -24,6 +27,14 @@ export default function Login() {
     try {
       // make request to API
       const res: any = await login(data);
+      if (res.data.user == null) {
+        toast({
+          title: res.data.message,
+          type: "foreground",
+          className: "bg-red-500 text-white",
+        });
+        return;
+      }
       // save user details in memory
       setUser(res.data.user);
       // save user details in disk
@@ -90,6 +101,7 @@ export default function Login() {
         <div className="h-full bg-white w-full object-contain dark:brightness-[0.2] dark:grayscale">
           <img src="src/assets/login.jpg" alt="" />
         </div>
+        <Toaster />
       </div>
     </div>
   );

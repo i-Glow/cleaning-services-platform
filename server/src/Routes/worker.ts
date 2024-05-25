@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  deleteWorker,
   getOrderDetails,
   getWorkerOrders,
   getWorkers,
@@ -165,5 +166,7 @@ router.put("/updateOrder", updateOrder);
 //   "message": "An error occured"
 // }
 router.put("/updateUser", updateWorker);
+
+router.delete("/:id", deleteWorker);
 
 export default router;

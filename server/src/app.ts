@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import { getOffers } from "./Controllers/clientController";
 import { createAdminAccount } from "./Controllers/authController";
 import cors from "cors";
 
@@ -43,3 +44,5 @@ app.use("/api/admin", adminRouter);
 // Routes for the auth
 import authRouter from "./Routes/auth";
 app.use("/api/auth", authRouter);
+
+app.get("/api/offers", getOffers);

@@ -20,6 +20,7 @@ import Skeleton from "./pages/services/Skeleton";
 import WorkerAccount from "./pages/worker_account/WorkerAccount";
 import WrokerDashboard from "./pages/worker_dashboard/WrokerDashboard";
 import WorkerProfile from "./pages/worker_profile/WorkerProfile";
+import ClientOffers from "./pages/client_offers/ClientOffers";
 
 export default function Router() {
   return (
@@ -46,6 +47,7 @@ export default function Router() {
           </Route>
           <Route element={<ProtectedRoute role="client" />}>
             <Route path="/u/account" element={<ClientAccount />} />
+            <Route path="/offres" element={<ClientOffers />} />
             <Route path="/u/reservations" element={<ClientReservations />} />
           </Route>
         </Routes>

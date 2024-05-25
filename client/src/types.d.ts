@@ -124,3 +124,11 @@ type Order = {
   type: string;
   workerId: string;
 };
+
+type Reduction = {
+  id: string;
+  description: string;
+  startDate: DateTime;
+  endDate: DateTime;
+  reductionPercentage: number;
+};

@@ -1,4 +1,5 @@
 import { addWorker, getWorkers } from "@/api/admin";
+import { deleteWorker } from "@/api/worker";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -22,7 +23,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import cities from "@/utils/cities";
 import services from "@/utils/services";
-import { CirclePlus, CircleUserRound } from "lucide-react";
+import { CirclePlus, CircleUserRound, Trash } from "lucide-react";
 import { FormEvent, SetStateAction, useEffect, useState } from "react";
 
 export default function Partners() {
@@ -93,6 +94,16 @@ export default function Partners() {
     }
   };
 
+  const handleDeleteWorker = async (id: string | undefined) => {
+    await deleteWorker(id ?? "");
+    location.reload();
+  };
+  const handleCancel = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    // Assuming you're using @reach/dialog
+    // This will close the dialog
+    (event.currentTarget.closest("@reach/dialog") as any)?.dismiss();
+  };
   useEffect(() => {
     getPartners();
   }, []);
@@ -204,9 +215,6 @@ export default function Partners() {
                 </div>
               </div>
               <DialogFooter className="mt-4">
-                <Button variant="outline" type="reset">
-                  Annuler
-                </Button>
                 <Button type="submit">Creer</Button>
               </DialogFooter>
             </form>
@@ -215,9 +223,44 @@ export default function Partners() {
         {partners.map((partner) => (
           <Card className="overflow-hidden" key={partner.id}>
             <CardHeader>
-              <div className="flex gap-2">
-                <CircleUserRound />
-                <p>{partner.name}</p>
+              <div className="w-full flex justify-between">
+                <div className="flex gap-2">
+                  <CircleUserRound />
+                  <p>{partner.name}</p>
+                </div>
+                <Dialog>
+                  <DialogTrigger>
+                    <Button variant="ghost">
+                      <Trash />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="md:min-w-[768px]">
+                    <DialogHeader className="mb-4">
+                      <DialogTitle>
+                        <p>Confirmation de suppression</p>
+                      </DialogTitle>
+                    </DialogHeader>
+                    <div>
+                      <p>Voullez vous vraiment supprimer ce partnaire?</p>
+                      <div className="w-full flex justify-end gap-2">
+                        <Button
+                          className="hover:bg-red-400"
+                          onClick={() => {
+                            handleDeleteWorker(partner.id);
+                          }}
+                        >
+                          Oui, supprimer
+                        </Button>
+                        <Button
+                          className="bg-transparent text-black border border-black"
+                          onClick={handleCancel}
+                        >
+                          Non, annuler
+                        </Button>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
               </div>
             </CardHeader>
             <CardContent>
@@ -234,7 +277,7 @@ export default function Partners() {
                 )}
               </p>
               <p>
-                Adresse:{" "}
+                Adresse:
                 {
                   cities.find((city) => city.id === String(partner.wilaya))
                     ?.name

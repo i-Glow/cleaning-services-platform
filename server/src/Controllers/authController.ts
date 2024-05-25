@@ -16,7 +16,7 @@ export const signIn = async (req: Request, res: Response) => {
       },
     });
     if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(200).json({ message: "Identifiants invalides" });
     }
     res.status(200).json({ message: "User signed in successfully", user });
   } catch (error) {

@@ -132,3 +132,21 @@ export const updateWorker = async (req: Request, res: Response) => {
     res.status(500).json({ message: "An error occured" });
   }
 };
+
+export const deleteWorker = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    // Delete all related records first
+    await db.order.deleteMany({ where: { workerId: id } });
+    await db.teamMember.deleteMany({ where: { team: { leaderId: id } } });
+    await db.team.deleteMany({ where: { leaderId: id } });
+
+    // Then delete the worker
+    const worker = await db.user.delete({ where: { id } });
+
+    res.status(200).json({ message: "Worker deleted successfully", worker });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "An error occured" });
+  }
+};

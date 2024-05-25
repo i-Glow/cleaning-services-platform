@@ -114,3 +114,19 @@ export const getOrders = async (req: Request, res: Response) => {
     res.status(500).json({ message: "An error occured" });
   }
 };
+
+export const getOffers = async (req: Request, res: Response) => {
+  try {
+    const now = new Date();
+    const offers = await db.offer.findMany({
+      where: {
+        startDate: { lte: now },
+        endDate: { gte: now },
+      },
+    });
+    res.status(200).json({ offers });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "An error occured" });
+  }
+};
