@@ -11,7 +11,7 @@ const port = 5000;
 // This allows specific domains to access our API and prevents unwated ones from reaching it
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.ALLOWED_ORIGINS || "http://localhost:5173",
   })
 );
 
