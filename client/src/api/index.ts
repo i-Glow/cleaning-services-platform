@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const defaultAxios = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://cleaning-services-platform-api.onrender.com/api",
 });
 
 export default defaultAxios;
