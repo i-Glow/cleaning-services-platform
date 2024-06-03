@@ -11,7 +11,7 @@ export const getWorkers = async (req: Request, res: Response) => {
         wilaya: parseInt(wilaya),
         workerPrices: {
           services: {
-            has: service,
+            contains: service,
           },
         },
       },

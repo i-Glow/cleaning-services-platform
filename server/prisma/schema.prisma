@@ -9,14 +9,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
-}
-
-enum Roles {
-  client
-  worker
-  admin
 }
 
 model User {
@@ -27,7 +21,7 @@ model User {
   password       String
   wilaya         Int
   phoneNumber    String
-  role           Roles
+  role           String
   workerPrices   WorkerPrices? @relation(fields: [workerPricesId], references: [id])
   workerPricesId String?
   clientOrders   Order[]       @relation("clientOrders")
@@ -51,8 +45,8 @@ model TeamMember {
 
 // possible services are : 
 model WorkerPrices {
-  id                 String   @id @default(uuid())
-  services           String[]
+  id                 String @id @default(uuid())
+  services           String
   priceForMeter      Float?
   priceForWindow     Float?
   priceForInsideCar  Float?
@@ -63,46 +57,22 @@ model WorkerPrices {
   worker             User[]
 }
 
-enum OrderStates {
-  pending
-  accepted
-  refused
-  cancelled
-  done
-}
-
-enum OrderType {
-  pool
-  afterEvent
-  restaurant
-  window
-  car
-  house
-  dish
-}
-
 model Order {
-  id       String      @id @default(uuid())
+  id       String   @id @default(uuid())
   date     DateTime
-  state    OrderStates @default(pending)
+  state    String   @default("pending")
   price    Float
   type     String
-  client   User        @relation("clientOrders", fields: [clientId], references: [id])
+  client   User     @relation("clientOrders", fields: [clientId], references: [id])
   clientId String
-  worker   User        @relation("workerOrders", fields: [workerId], references: [id])
+  worker   User     @relation("workerOrders", fields: [workerId], references: [id])
   workerId String
 
   numberOfDishes  Int?
   numberOfWindows Int?
   numberOfRooms   Int?
   meters          Float?
-  carCleaning     CarTypes?
-}
-
-enum CarTypes {
-  inside
-  outside
-  all
+  carCleaning     String?
 }
 
 model Offer {

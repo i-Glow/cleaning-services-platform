@@ -2,7 +2,12 @@ import { addWorker, getWorkers } from "@/api/admin";
 import { deleteWorker } from "@/api/worker";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -25,6 +30,7 @@ import cities from "@/utils/cities";
 import services from "@/utils/services";
 import { CirclePlus, CircleUserRound, Trash } from "lucide-react";
 import { FormEvent, SetStateAction, useEffect, useState } from "react";
+import CardButton from "../worker_dashboard/CardButton";
 
 export default function Partners() {
   const { toast } = useToast();
@@ -114,7 +120,7 @@ export default function Partners() {
       <div className="grid grid-cols-3 max-w-[1280px] mx-10 lg:mx-auto gap-x-4 gap-y-6">
         <Dialog>
           <DialogTrigger>
-            <Card className="cursor-pointer h-full">
+            <Card className="cursor-pointer min-h-48 h-full">
               <CardContent className="flex justify-center items-center h-full">
                 <CirclePlus className="text-gray-400" size={38} />
               </CardContent>
@@ -228,39 +234,6 @@ export default function Partners() {
                   <CircleUserRound />
                   <p>{partner.name}</p>
                 </div>
-                <Dialog>
-                  <DialogTrigger>
-                    <Button variant="ghost">
-                      <Trash />
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="md:min-w-[768px]">
-                    <DialogHeader className="mb-4">
-                      <DialogTitle>
-                        <p>Confirmation de suppression</p>
-                      </DialogTitle>
-                    </DialogHeader>
-                    <div>
-                      <p>Voullez vous vraiment supprimer ce partnaire?</p>
-                      <div className="w-full flex justify-end gap-2">
-                        <Button
-                          className="hover:bg-red-400"
-                          onClick={() => {
-                            handleDeleteWorker(partner.id);
-                          }}
-                        >
-                          Oui, supprimer
-                        </Button>
-                        <Button
-                          className="bg-transparent text-black border border-black"
-                          onClick={handleCancel}
-                        >
-                          Non, annuler
-                        </Button>
-                      </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
               </div>
             </CardHeader>
             <CardContent>
@@ -268,22 +241,55 @@ export default function Partners() {
               <p>Telephone: {partner.phoneNumber}</p>
               <p>
                 Specialites:{" "}
-                {partner?.workerPrices?.services.map(
-                  (svc, idx) =>
-                    services.find((service) => service.api === svc)?.name +
-                    (idx < partner?.workerPrices?.services?.length! - 1
-                      ? ", "
-                      : "")
-                )}
+                {partner?.workerPrices?.services
+                  /* @ts-ignore */
+                  .split(",")
+                  .map(
+                    (svc: string, idx: number) =>
+                      services.find((service) => service.api === svc)?.name +
+                      (idx < partner?.workerPrices?.services?.length! - 1
+                        ? ", "
+                        : "")
+                  )}
               </p>
               <p>
-                Adresse:
+                Adresse:{" "}
                 {
                   cities.find((city) => city.id === String(partner.wilaya))
                     ?.name
                 }
               </p>
             </CardContent>
+            <CardFooter className="p-0">
+              <Dialog>
+                <DialogTrigger className="w-full">
+                  <CardButton variant="danger">Supprimer</CardButton>
+                </DialogTrigger>
+                <DialogContent className="md:min-w-[768px]">
+                  <DialogHeader className="mb-4">
+                    <DialogTitle>
+                      <p>Confirmation de suppression</p>
+                    </DialogTitle>
+                  </DialogHeader>
+                  <div>
+                    <p>Voullez vous vraiment supprimer ce partenaire?</p>
+                    <div className="w-full flex justify-end gap-2">
+                      <Button variant="outline" onClick={handleCancel}>
+                        Annuler
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        onClick={() => {
+                          handleDeleteWorker(partner.id);
+                        }}
+                      >
+                        Supprimer
+                      </Button>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </CardFooter>
           </Card>
         ))}
       </div>

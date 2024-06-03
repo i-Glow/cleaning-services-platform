@@ -27,7 +27,7 @@ export const addWorker = async (req: Request, res: Response) => {
         wilaya,
         workerPrices: {
           create: {
-            services,
+            services: services.toString(),
             priceForAllCar,
             priceForOutsideCar,
             priceForInsideCar,

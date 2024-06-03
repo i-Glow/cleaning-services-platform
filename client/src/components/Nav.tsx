@@ -23,8 +23,7 @@ export default function Nav() {
       <div className="flex items-center justify-center lg:gap-32 gap-4 py-4">
         <Link to="/">
           <div className="flex items-center">
-            <h2 className="text-primary text-lg sm:text-2xl">ANC</h2>
-            <h2 className="text-lg sm:text-2xl">Clean</h2>
+            <h2 className="text-primary text-lg sm:text-2xl">Cleano</h2>
           </div>
         </Link>
         <div className="flex gap-1 md:gap-4 items-center">

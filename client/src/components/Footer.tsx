@@ -1,4 +1,5 @@
 import { Facebook, Instagram, Mail, Phone } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -6,8 +7,7 @@ export default function Footer() {
       <div className="flex flex-wrap justify-center gap-16 py-20">
         <div className="[&>*]:mb-2">
           <div className="flex">
-            <h2 className="text-primary">ANC</h2>
-            <h2>Clean</h2>
+            <h2>Cleano</h2>
           </div>
           <p className="max-w-[35ch]">
             Nous travaillons dans de nombreux domaines pour nettoyer votre
@@ -18,23 +18,27 @@ export default function Footer() {
           <h4>Contact</h4>
           <div className="flex gap-2">
             <Mail />
-            <p>ancclean@gmail.com</p>
+            <p>cleano@email.com</p>
           </div>
           <div className="flex gap-2">
             <Phone />
-            <p>+213 (0) 798480836</p>
+            <p>+213 (0) 612345789</p>
           </div>
         </div>
         <div className="[&>*]:mb-2">
-          <h4>Nos resaux</h4>
-          <div className="flex gap-2">
-            <Facebook />
-            <p>Facebook</p>
-          </div>
-          <div className="flex gap-2">
-            <Instagram />
-            <p>Instagram</p>
-          </div>
+          <h4>Nos réseaux</h4>
+          <Link to="https://facebook.com">
+            <div className="flex gap-2 mb-2">
+              <Facebook />
+              <p>Facebook</p>
+            </div>
+          </Link>
+          <Link to="https://instagram.com">
+            <div className="flex gap-2">
+              <Instagram />
+              <p>Instagram</p>
+            </div>
+          </Link>
         </div>
       </div>
     </footer>

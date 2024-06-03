@@ -79,11 +79,11 @@ type Partner = {
   password: string;
   address: string;
   phoneNumber: string;
-  services: string[];
+  services: string;
   wilaya: number;
   workerPrices: {
     id: string;
-    services: string[];
+    services: string;
     priceForAllCar: number;
     priceForOutsideCar: number;
     priceForInsideCar: number;
