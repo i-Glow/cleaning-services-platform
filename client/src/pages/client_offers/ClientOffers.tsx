@@ -1,6 +1,5 @@
 import { getOffers } from "@/api/client";
 import Nav from "@/components/Nav";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";

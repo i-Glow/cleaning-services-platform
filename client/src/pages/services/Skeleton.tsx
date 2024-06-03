@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function Skeleton() {
   return (
     <div className="py-10 flex flex-col items-center justify-center">

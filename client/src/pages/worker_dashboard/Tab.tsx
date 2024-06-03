@@ -68,7 +68,7 @@ export default function Tab({
 function FooterContent({ id, type }: { id: string; type: OfferTypes }) {
   const handleClick = async (state: string) => {
     try {
-      const res = await updateOrder({ id, state });
+      await updateOrder({ id, state });
 
       location.reload();
     } catch (error) {

@@ -28,7 +28,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import cities from "@/utils/cities";
 import services from "@/utils/services";
-import { CirclePlus, CircleUserRound, Trash } from "lucide-react";
+import { CirclePlus, CircleUserRound } from "lucide-react";
 import { FormEvent, SetStateAction, useEffect, useState } from "react";
 import CardButton from "../worker_dashboard/CardButton";
 

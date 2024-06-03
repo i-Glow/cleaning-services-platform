@@ -19,7 +19,6 @@ import Services from "./pages/services/Services";
 import Skeleton from "./pages/services/Skeleton";
 import WorkerAccount from "./pages/worker_account/WorkerAccount";
 import WrokerDashboard from "./pages/worker_dashboard/WrokerDashboard";
-import WorkerProfile from "./pages/worker_profile/WorkerProfile";
 import ClientOffers from "./pages/client_offers/ClientOffers";
 
 export default function Router() {
@@ -34,7 +33,6 @@ export default function Router() {
             <Route index element={<Skeleton />} />
             <Route path=":service" element={<Service />} />
           </Route>
-          <Route path="/partenaire/:id" element={<WorkerProfile />} />
           <Route element={<ProtectedRoute role="admin" />}>
             <Route path="/a" element={<AdminDashboard />}>
               <Route index path="partenaires" element={<Partners />} />
