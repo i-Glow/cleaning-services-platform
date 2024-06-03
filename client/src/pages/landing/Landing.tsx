@@ -5,6 +5,16 @@ import { Button } from "../../components/ui/button";
 import { Link } from "react-router-dom";
 import Footer from "@/components/Footer";
 import services from "@/utils/services";
+import Hero from "../../assets/hero.png";
+import Maison from "../../assets/Maison.jpg";
+import Restaurant from "../../assets/Restaurant.jpg";
+import Piscine from "../../assets/Piscine.jpg";
+
+const images = {
+  Maison,
+  Restaurant,
+  Piscine,
+};
 
 export default function Landing() {
   return (
@@ -31,7 +41,7 @@ export default function Landing() {
           </a>
         </div>
         <div className="w-96 hidden md:block">
-          <img src="src/assets/hero.png" />
+          <img src={Hero} />
         </div>
       </section>
       <section className="bg-white">
@@ -53,7 +63,7 @@ export default function Landing() {
                   <Link to={"/services/" + service.link} key={idx}>
                     <div className="relative max-w-80 lg:max-w-96 w-max aspect-square rounded-md bg-white overflow-hidden group hover:cursor-pointer">
                       <img
-                        src={`src/assets/${service.name}.jpg`}
+                        src={images[service.name as keyof typeof images]}
                         className="h-4/5 w-full rounded-md object-cover"
                       />
                       <div className="w-full h-1/5 flex items-center px-8 justify-between text-gray-600">

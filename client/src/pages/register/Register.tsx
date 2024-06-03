@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import cities from "@/utils/cities";
+import RegisterImage from "../../assets/signup.jpg";
 
 export default function Register() {
   const { setUser } = useAuth();
@@ -127,7 +128,7 @@ export default function Register() {
       </div>
       <div className="hidden bg-muted lg:block">
         <div className="h-full w-full bg-white object-cover dark:brightness-[0.2] dark:grayscale">
-          <img src="/src/assets/signup.jpg" alt="" />
+          <img src={RegisterImage} alt="" />
         </div>
       </div>
     </div>

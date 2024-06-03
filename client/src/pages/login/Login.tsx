@@ -8,6 +8,7 @@ import { FormEvent, useRef } from "react";
 import { useAuth } from "@/lib/context/auth";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
+import LoginImage from "../../assets/login.jpg";
 
 export default function Login() {
   const { setUser } = useAuth();
@@ -99,7 +100,7 @@ export default function Login() {
       </div>
       <div className="hidden bg-muted lg:block">
         <div className="h-full bg-white w-full object-contain dark:brightness-[0.2] dark:grayscale">
-          <img src="src/assets/login.jpg" alt="" />
+          <img src={LoginImage} alt="" />
         </div>
         <Toaster />
       </div>
